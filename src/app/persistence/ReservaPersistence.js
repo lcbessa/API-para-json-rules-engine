@@ -20,7 +20,7 @@ export default {
       });
       return {
         status: 201,
-        sucess: reservaCriada,
+        success: reservaCriada,
       };
     } catch (error) {
       console.error("Erro ao criar reserva", error);
@@ -41,7 +41,7 @@ export default {
       });
       return {
         status: 200,
-        sucess: reservaAtualizada,
+        success: reservaAtualizada,
       };
     } catch (error) {
       console.error("Erro ao atualizar reserva", error);
@@ -70,7 +70,7 @@ export default {
     console.log("reservasDoLaboratorio", reservasDoLaboratorio);
     return {
       status: 200,
-      sucess: reservasDoLaboratorio,
+      success: reservasDoLaboratorio,
     };
   },
   async obterUmaReservaPorId(id) {
@@ -90,7 +90,7 @@ export default {
       });
       return {
         status: 200,
-        sucess: reserva,
+        success: reserva,
       };
     } catch (error) {
       console.error("Erro ao buscar a reservas", error);
@@ -105,7 +105,7 @@ export default {
       const reservas = await prisma.reserva.findMany(ordemCrescente);
       return {
         status: 200,
-        sucess: reservas,
+        success: reservas,
       };
     } catch (error) {
       console.error("Erro ao listar reservas", error);
@@ -122,7 +122,7 @@ export default {
       });
       return {
         status: 200,
-        sucess: "Reserva cancelada com sucesso!",
+        success: "Reserva cancelada com sucesso!",
       };
     } catch (error) {
       console.error("Erro ao deletar reserva", error);

@@ -11,7 +11,7 @@ export default {
       const laboratorio = await laboratorioPersistence.obterLaboratorioPorId(
         reserva.laboratorioId
       );
-      if (!laboratorio.sucess || !laboratorio.sucess.ativo) {
+      if (!laboratorio.success || !laboratorio.success.ativo) {
         return {
           status: 400,
           error: "Laboratório não existe ou está inativo.",
@@ -81,7 +81,7 @@ export default {
       const ReservaProcurada = await ReservaPersistence.obterUmaReservaPorId(
         id
       );
-      if (!ReservaProcurada.sucess) {
+      if (!ReservaProcurada.success) {
         return {
           status: 404,
           error: "Reserva não encontrada!",
@@ -117,7 +117,7 @@ export default {
       const ReservaProcurada = await ReservaPersistence.obterUmaReservaPorId(
         id
       );
-      if (!ReservaProcurada.sucess) {
+      if (!ReservaProcurada.success) {
         return {
           status: 404,
           error: "Reserva não encontrada!",
@@ -127,7 +127,7 @@ export default {
       console.log("reservaASerAtualizada", reservaASerAtualizada);
       // Verifica se o usuário que está tentando atualizar a reserva é o mesmo que a criou
       if (
-        reservaASerAtualizada.usuarioId !== ReservaProcurada.sucess.usuario.id
+        reservaASerAtualizada.usuarioId !== ReservaProcurada.success.usuario.id
       ) {
         return {
           status: 403,
@@ -181,7 +181,7 @@ export default {
 
       // A reserva não pode ser feita para um laboratório que já tenha uma reserva no mesmo horário.
       const conflitoDeReserva = await this.conflitoReserva(
-        ReservaProcurada.sucess.laboratorio.id,
+        ReservaProcurada.success.laboratorio.id,
         reservaASerAtualizada.dataHoraInicio,
         reservaASerAtualizada.dataHoraFim
       );
@@ -207,7 +207,7 @@ export default {
       const ReservaProcurada = await ReservaPersistence.obterUmaReservaPorId(
         id
       );
-      if (!ReservaProcurada.sucess) {
+      if (!ReservaProcurada.success) {
         return {
           status: 404,
           error: "Reserva não encontrada!",
@@ -215,7 +215,7 @@ export default {
       }
 
       // Verifica se o usuário que está tentando deletar a reserva é o mesmo que a criou
-      if (usuarioId !== ReservaProcurada.sucess.usuario.id) {
+      if (usuarioId !== ReservaProcurada.success.usuario.id) {
         return {
           status: 403,
           error: "Apenas o usuário que criou a reserva pode deletá-la.",
@@ -227,7 +227,7 @@ export default {
       dataAtualDoCancelamento.setHours(dataAtualDoCancelamento.getHours() - 3); // Ajusta o fuso horário para o horário de Brasília
 
       const dataHoraInicioDaReservaQuePoderaSerCancelada = new Date(
-        ReservaProcurada.sucess.dataHoraInicio
+        ReservaProcurada.success.dataHoraInicio
       );
 
       const diferencaEmMinutos = differenceInMinutes(
@@ -272,8 +272,8 @@ export default {
       laboratorioId,
       dataReferencia
     );
-    if (reservas.sucess.length > 0) {
-      const conflito = reservas.sucess.some((reserva) => {
+    if (reservas.success.length > 0) {
+      const conflito = reservas.success.some((reserva) => {
         return (
           (reserva.dataHoraInicio <= dataHoraInicio &&
             reserva.dataHoraFim >= dataHoraInicio) || // conflito no início

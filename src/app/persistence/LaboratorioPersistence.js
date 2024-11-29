@@ -10,7 +10,7 @@ export default {
       });
       return {
         status: 201,
-        sucess: laboratorioCriado,
+        success: laboratorioCriado,
       };
     } catch (error) {
       console.error("Erro ao criar laboratório", error);
@@ -25,7 +25,7 @@ export default {
       const laboratorios = await prisma.laboratorio.findMany(ordemCrescente);
       return {
         status: 200,
-        sucess: laboratorios,
+        success: laboratorios,
       };
     } catch (error) {
       console.error("Erro ao listar laboratórios", error);
@@ -47,7 +47,7 @@ export default {
 
       return {
         status: 200,
-        sucess: laboratorioAtualizado,
+        success: laboratorioAtualizado,
       };
     } catch (error) {
       console.error("Erro ao atualizar laboratório", error);
@@ -64,7 +64,7 @@ export default {
       });
       return {
         status: 200,
-        sucess: "Laboratório deletado com sucesso!",
+        success: "Laboratório deletado com sucesso!",
       };
     } catch (error) {
       console.error("Erro ao deletar laboratório", error);
@@ -82,7 +82,7 @@ export default {
       });
       return {
         status: 200,
-        sucess: laboratorioDesativado,
+        success: laboratorioDesativado,
       };
     } catch (error) {
       console.error("Erro ao desativar laboratório", error);
@@ -101,7 +101,7 @@ export default {
       });
       return {
         status: 200,
-        sucess: laboratorio,
+        success: laboratorio,
       };
     } catch (error) {
       console.error("Erro ao buscar laboratório", error);
@@ -118,7 +118,7 @@ export default {
       });
       return {
         status: 200,
-        sucess: laboratorio,
+        success: laboratorio,
       };
     } catch (error) {
       console.error(`Erro ao buscar laboratório por ${campo}`, error);

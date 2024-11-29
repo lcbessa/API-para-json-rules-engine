@@ -49,7 +49,10 @@ export default {
   async listarUmLaboratorio(id) {
     try {
       const laboratorioProcurado = await this.obterLaboratorioPorId(id);
-      if (!laboratorioProcurado.sucess || !laboratorioProcurado.sucess.ativo) {
+      if (
+        !laboratorioProcurado.success ||
+        !laboratorioProcurado.success.ativo
+      ) {
         return {
           status: 400,
           error: "Laboratório não encontrado ou inativo!",
@@ -68,7 +71,10 @@ export default {
     try {
       const laboratorioProcurado = await this.obterLaboratorioPorId(id);
 
-      if (!laboratorioProcurado.sucess || !laboratorioProcurado.sucess.ativo) {
+      if (
+        !laboratorioProcurado.success ||
+        !laboratorioProcurado.success.ativo
+      ) {
         return {
           status: 404,
           error: "Laboratório não encontrado ou inativo!",
@@ -107,19 +113,19 @@ export default {
     try {
       let laboratorioASerExcluido = null;
       laboratorioASerExcluido = await this.obterLaboratorioPorId(id);
-      if (!laboratorioASerExcluido.sucess) {
+      if (!laboratorioASerExcluido.success) {
         return {
           status: 404,
           error: "Laboratório não encontrado!",
         };
       }
       console.log(laboratorioASerExcluido);
-      if (!laboratorioASerExcluido.sucess.reservas.length) {
+      if (!laboratorioASerExcluido.success.reservas.length) {
         return await LaboratorioPersistence.deletarLaboratorio(id);
       } else {
         const dataAtual = new Date();
         console.log(dataAtual);
-        const reservasFuturas = laboratorioASerExcluido.sucess.reservas.filter(
+        const reservasFuturas = laboratorioASerExcluido.success.reservas.filter(
           (reserva) => reserva.dataHoraInicio >= dataAtual
         );
         console.log(reservasFuturas);
@@ -127,7 +133,7 @@ export default {
           await LaboratorioPersistence.desativarLaboratorio(id);
           return {
             status: 200,
-            sucess: "Laboratório desativado com sucesso!",
+            success: "Laboratório desativado com sucesso!",
           };
         } else {
           return {
@@ -156,7 +162,7 @@ export default {
         campo,
         valorCampo
       );
-    if (campoProcurado.sucess) {
+    if (campoProcurado.success) {
       return {
         status: 400,
         error: `${campo} já existente.`,

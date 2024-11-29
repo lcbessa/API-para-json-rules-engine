@@ -15,7 +15,7 @@ export default {
 
       return {
         status: 201,
-        sucess: usuarioCriado,
+        success: usuarioCriado,
       };
     } catch (error) {
       console.error("Erro ao criar usuário", error);
@@ -39,7 +39,7 @@ export default {
 
       return {
         status: 200,
-        sucess: usuariosComReserva,
+        success: usuariosComReserva,
       };
     } catch (error) {
       console.error("Erro ao listar usuários", error);
@@ -57,7 +57,7 @@ export default {
 
       return {
         status: 200,
-        sucess: emailRegistrado,
+        success: emailRegistrado,
       };
     } catch (error) {
       console.error("Erro ao buscar usuário por email", error);
