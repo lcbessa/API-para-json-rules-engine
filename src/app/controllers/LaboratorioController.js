@@ -1,5 +1,6 @@
-import LaboratorioBusiness from "../business/LaboratorioBusiness";
 import { validarId, verificarCampoObrigatorio } from "../../utils/validacoes";
+import LaboratorioPersistence from "../persistence/LaboratorioPersistence";
+import axios from "axios";
 
 export default {
   async criarLaboratorio(request, response) {
@@ -13,12 +14,22 @@ export default {
       resposta = verificarCampoObrigatorio(sigla, "sigla");
       if (resposta) return response.status(resposta.status).json(resposta);
 
-      resposta = await LaboratorioBusiness.criarLaboratorio({
-        nome,
-        sigla,
-      });
-
-      return response.status(resposta.status).json(resposta);
+      const motorRegrasResponse = await axios.post(
+        "http://localhost:7000/motor-de-regras/criarLaboratorio",
+        { nome, sigla },
+        { validateStatus: () => true }
+      );
+      if (motorRegrasResponse.data.success === true) {
+        const novoLaboratorio = await LaboratorioPersistence.criarLaboratorio({
+          nome,
+          sigla,
+        });
+        return response.status(201).json(novoLaboratorio);
+      } else {
+        // Regras de negócio não foram atendidas, retorna o motivo do erro
+        console.log("Erro ao criar Laboratório", motorRegrasResponse.data);
+        return response.status(400).json(motorRegrasResponse.data);
+      }
     } catch (error) {
       console.error("Erro ao criar laboratório", error);
       return response.status(500).json({

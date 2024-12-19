@@ -1,9 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import { isValid } from "date-fns";
 import { validarId, verificarCampoObrigatorio } from "../../utils/validacoes";
-import ReservaBusiness from "../business/ReservaBusiness";
-
-const prisma = new PrismaClient();
+import axios from "axios";
+import ReservaPersistence from "../persistence/ReservaPersistence";
 
 export default {
   async criarReserva(request, response) {
@@ -26,7 +24,7 @@ export default {
       resposta = verificarCampoObrigatorio(dataHoraFim, "Data e hora de fim");
       if (resposta) return response.status(400).send(resposta);
 
-      // RN9 - O identificador do Laboratório deve ser obrigatório. 
+      // RN9 - O identificador do Laboratório deve ser obrigatório.
       resposta = verificarCampoObrigatorio(laboratorioId, "Laboratório");
       if (resposta) return response.status(400).send(resposta);
 
@@ -162,8 +160,20 @@ export default {
       let resposta = validarId(id);
       if (resposta) return response.status(400).send(resposta);
 
-      resposta = await ReservaBusiness.deletarReserva(id, usuarioId);
-      return response.status(resposta.status).json(resposta);
+      const motorRegrasResponse = await axios.post(
+        "http://localhost:7000/motor-de-regras/cancelarReserva",
+        { id, usuarioId },
+        { validateStatus: () => true }
+      );
+
+      if (motorRegrasResponse.data.success === true) {
+        // Regras de negócio foram atendidas, deleta a reserva
+        resposta = await ReservaPersistence.deletarReserva(id);
+        return response.status(resposta.status).json(resposta);
+      } else {
+        // Regras de negócio não foram atendidas, retorna o motivo do erro
+        return response.status(400).json(motorRegrasResponse.data);
+      }
     } catch (error) {
       console.error("Erro ao cancelar reserva", error);
       return response
